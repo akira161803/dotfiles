@@ -1,0 +1,7 @@
+# This is Git's per-user configuration file.
+[user]
+	name = akira
+	email = akira161803@gmail.com
+# Please adapt and uncomment the following lines:
+#	name = akira
+#	email = akira@IshiinoMacBook-Air.local

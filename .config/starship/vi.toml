@@ -1,0 +1,4 @@
+[character]
+success_symbol = '[\[I\]](bold green) '
+error_symbol = '[\[I\]](bold red) '
+vimcmd_symbol = '[\[N\]](bold green) '

@@ -1,0 +1,22 @@
+\usepackage{booktabs}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+\toprule
+フレームタイプ & 前方参照 & 後方参照 & 例（GOP内） \\
+\midrule
+I フレーム & なし & なし & I(0): なし \\
+P フレーム & 直前のI/P & なし & P(3): I(0), P(6): P(3) \\
+B フレーム & 直前のI/P & 直後のI/P & B(1): I(0)→P(3) \\
+\bottomrule
+\end{tabular}
+\caption{table name}
+\end{table}
+
+%l左揃え, r右揃え, c中央, p{4cm}(幅4cmの段落形式)
+%\begin{tabular}{lccc|cc|r|c p{3cm}|c|}
+
+%$\text{\textbackslash hline}$ の代わりに \toprule、\midrule、\bottomrule
+%（booktabsパッケージ）を使うと、線が少し太くなり、上下に適切なスペースが空くため、
+%より見栄えの良い表が作成できます。

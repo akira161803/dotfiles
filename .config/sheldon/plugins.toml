@@ -1,0 +1,18 @@
+shell = "zsh"
+
+[plugins]
+
+[plugins.autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.man-color]
+github = "ael-code/zsh-colored-man-pages"
+
+[plugins.completions]
+github = "marlonrichert/zsh-autocomplete"
+
+[plugins.syntax-highlighting]
+ github = "zsh-users/zsh-syntax-highlighting"
+
+
+
