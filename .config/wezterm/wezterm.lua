@@ -7,7 +7,7 @@ config.font_size = 17
 config.color_scheme = "Kanagawa (Gogh)"
 --config.color_scheme = 'aikofog (terminal.sexy)'
 config.use_ime = true
-config.window_background_opacity = 0.85 -- 透過
+config.window_background_opacity = 0.77 -- 透過
 config.macos_window_background_blur = 20 -- ぼかし
 --config.window_decorations = "RESIZE" -- 上のバー消す
 config.hide_tab_bar_if_only_one_tab = true -- タブが一つのとき非表示
@@ -25,13 +25,13 @@ config.window_background_gradient = {
 
 config.show_new_tab_button_in_tab_bar = false -- タブバーの+を消す
 
-wezterm.on('gui-startup', function()
-    wezterm.mux.spawn_window({
-        position = {
-            x = 200,
-            y = 100,
-        },
-    })
+wezterm.on("gui-startup", function()
+	wezterm.mux.spawn_window({
+		position = {
+			x = 200,
+			y = 100,
+		},
+	})
 end)
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
