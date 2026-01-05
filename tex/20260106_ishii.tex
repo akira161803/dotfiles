@@ -2,13 +2,13 @@
 
 \usepackage{amsmath}
 \usepackage{mdframed}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{subcaption}
 \usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage[hidelinks]{hyperref} 
 
-% 本文
-\url{https://sites.google.com/view/gemini} % URLをそのまま表示
-\href{https://sites.google.com/view/gemini}{Geminiのサイト} % 好きな文字にリンクを貼る
 
 \title{ミーティング資料}
 \author{B3 AJG23066 石井章}
@@ -33,7 +33,7 @@
 
 \subsection{シミュレーション環境とパラメータ設定}
 
-シミュレーションシステムの基本設定を表\ref{tab:sim_params}に示す.
+シミュレーションの基本設定を表\ref{tab:sim_params}に示す.
 
 \begin{table}[H]
 \centering
@@ -51,7 +51,7 @@
 周波数帯域 & 2.4 GHz, 20 MHz 幅 \\
 レート制御 & MCS8 \\
 AP-STA間距離 & 10m \\
-UDPペイロードサイズ & 1400 バイト \\
+UDPペイロードサイズ & 1400 byte \\
 フレームレート & 30 fps (33.3 ms 間隔) \\
 I, P, Bパケット数 & それぞれ50, 15, 5 \\
 バースト送信時のパケット送信間隔 & 10\(\mu\)s \\
@@ -63,15 +63,13 @@ I, P, Bパケット数 & それぞれ50, 15, 5 \\
 
 \subsection{画像フレームのパケット数の設定}
 ffprobeというツールを使用してmp4動画のI, P, B
-フレームのデータ量を調べ、それをパケットサイズの
-1400byteで割ることで決定した。
+フレームのデータ量を調べ, それらをパケットサイズの
+1400byteで割ることで決定した.
 
 \begin{mdframed}[backgroundcolor=gray!10, hidealllines=true]
 \begin{verbatim}
- $ ffprobe -v error -select_streams v:0 -show_frames 
- -show_entries frame=pict_type,pkt_size -of csv 
- video.mp4 
- | head -5
+ $ ffprobe -v error -select_streams v:0 -show_frames -show_entries 
+ frame=pict_type,pkt_size -of csv video.mp4 | head -5
 frame,146191,I
 frame,5688,B
 frame,32288,P
@@ -80,12 +78,12 @@ frame,37237,P
 \end{verbatim}
 \end{mdframed}
 
-これによって得られる結果をI, P, Bフレームごとに
-ファイルに分け、フレームサイズの平均を求めた。
+これによって得られた結果をI, P, Bフレームごとに
+ファイルに分け, フレームサイズの平均を求めた.
 
 \begin{mdframed}[backgroundcolor=gray!10, hidealllines=true]
 \begin{verbatim}
-python3 avg.py Iframe.csv
+$ python3 avg.py Iframe.csv
 解析ファイル: Iframe.csv
 対象フレーム数: 36
 平均データ量: 83054.28 bytes
@@ -93,12 +91,16 @@ python3 avg.py Iframe.csv
 \end{verbatim}
 \end{mdframed}
 
-サンプルとして以下の三つの動画を使用した(すべて1080p)。
-それぞれミュージックビデオ、アニメ、スポーツの代表として想定している。
+サンプルとして以下の三つの動画を使用した(すべて1080p).
+
+それぞれミュージックビデオ, アニメ, スポーツのわかりやすい例として選定した.
 \begin{itemize}
-  \item \href{https://www.youtube.com/watch?v=WJzSBLCaKc8&list=RDWJzSBLCaKc8&start_radio=1}{ヒカキンyoutubeテーマソング} 
-  \item \href{https://www.youtube.com/watch?v=kVHimB7_cjQ}{ジョジョの奇妙な冒険予告} 
-  \item \href{https://www.youtube.com/watch?v=8X_f465Wli8}{井上尚弥vsピカソ戦ハイライト} 
+  \item ヒカキンyoutubeテーマソング
+    \footnote{\url{https://www.youtube.com/watch?v=WJzSBLCaKc8&list=RDWJzSBLCaKc8&start_radio=1}}
+  \item ジョジョの奇妙な冒険予告
+    \footnote{\url{https://www.youtube.com/watch?v=kVHimB7\_cjQ}}
+  \item 井上尚弥試合ハイライト
+  \footnote{\url{https://www.youtube.com/watch?v=8X\_f465Wli8}}
 \end{itemize}
 
 それぞれの動画のI, P, Bフレームをパケット数に換算した結果は以下の通り.
@@ -106,17 +108,72 @@ python3 avg.py Iframe.csv
   \centering
   \caption{画像フレームの平均パケット数}
   \begin{tabular}{c|ccc}
+    \toprule
     & I & P & B \\ 
+    \midrule
     ヒカキン & 34.72 & 13.13 & 5.04 \\ 
     ジョジョ & 47.95 & 15.20 & 4.34 \\
     井上尚弥 & 59.32 & 20.04 & 7.55 \\
+    \bottomrule
   \end{tabular}
 \end{table}
 
-動画によって画像フレームのデータ量にばらつきがあることがわかった。
-本実験では妥当な値として、
-Iフレーム=50パケット、Pフレーム=15パケット、Bフレーム=5パケット
-とすることにした。
+動画によって画像フレームのデータ量が異なる様子がわかった.
+
+本実験ではひとつの現実的な設定として, 
+Iフレーム:50パケット, Pフレーム:15パケット, Bフレーム:5パケット
+とすることにした.
+
+
+\subsection{干渉}
+干渉の影響を評価するため，画像フレームを受信するSTAと同一位置に
+干渉ノードを設置した．
+
+この干渉ノードは，同一チャネル上でAPに向けてダミーの UDPパケットを
+継続的に送信することで， 無線チャネルの占有および競合を発生させる．
+
+%\begin{figure}[htbp]
+%  \centering
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/00I-ac-rate.eps}
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/0EI-ac-rate.eps} 
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/A0I-ac-rate.eps} 
+%
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/00I-packet-ratio.eps}
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/0EI-packet-ratio.eps} 
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/A0I-packet-ratio.eps} 
+%
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/00I-eff-ratio.eps}
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/0EI-eff-ratio.eps} 
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/A0I-eff-ratio.eps} 
+%
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/00I-ref-status.eps}
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/0EI-ref-status.eps} 
+%  \includegraphics[width=0.6\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/A0I-ref-status.eps} 
+%
+%  \caption{Accepted Rateの解析結果} % 図のタイトル
+%  \label{fig:results} % 本文で引用するためのラベル
+%\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/00I-ac-rate.eps}
+    \caption{Iフレームの結果}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/0EI-ac-rate.eps} 
+    \caption{Pフレームの結果}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.5\textwidth}
+    \includegraphics[width=\textwidth]{~/workspace/ns-3.46.1/scratch/video-sim-log/figure/A0I-ac-rate.eps} 
+    \caption{Pフレームの結果}
+  \end{subfigure}
+  \caption{全体の解析結果の比較}
+
+\end{figure}
+
 
 
 \section{次回までの目標}

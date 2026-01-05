@@ -1,4 +1,40 @@
+\usepackage[dvipdfmx]{graphicx}
+
+
 \begin{figure}[htbp]
   \centering
-  \caption{}
+  \includegraphics[width=\textwidth]{figure/00I.eps} 
+  \caption{Accepted Rateの解析結果} 
+  \label{fig:results}
+\end{figure}
+
+%
+%\textwidth: 本文領域（左右の余白を除いた部分）の横幅。 
+%\columnwidth: 列の横幅。2段組の論文なら「1段分」の幅になります。 
+%\linewidth: 現在の行の横幅。箇条書き（itemize）の中などで使うと、インデント分を差し引いた幅に合わせてくれます。
+%
+
+%横に並べる
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{figure1.eps}
+  \hspace{10pt} % 横の隙間
+  \includegraphics[width=0.45\textwidth]{figure2.eps}
+  \caption{左右に並べた画像}
+\end{figure}
+
+%subcationを使う場合
+\usepackage{subcaption}
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{fig_a.eps}
+    \caption{Iフレームの結果}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{fig_b.eps}
+    \caption{Pフレームの結果}
+  \end{subfigure}
+  \caption{全体の解析結果の比較}
 \end{figure}
