@@ -17,6 +17,17 @@ B フレーム & 直前のI/P & 直後のI/P & B(1): I(0)→P(3) \\
 %l左揃え, r右揃え, c中央, p{4cm}(幅4cmの段落形式)
 %\begin{tabular}{lccc|cc|r|c p{3cm}|c|}
 
-%$\text{\textbackslash hline}$ の代わりに \toprule、\midrule、\bottomrule
-%（booktabsパッケージ）を使うと、線が少し太くなり、上下に適切なスペースが空くため、
-%より見栄えの良い表が作成できます。
+% \toprule、\midrule、\bottomrule
+%（booktabsパッケージ）を使うと、線が少し太くなり、上下に適切なスペース
+%が空くため、 より見栄えの良い表が作成できます。
+
+\begin{table}[htbp]
+  \centering
+  \caption{シミュレーション条件一覧}
+  \begin{tabular}{|l|c|r|} \hline
+    項目 & 設定値 & 備考 \\ \hline
+    距離 & 10m & 近接環境 \\ \hline
+    フレームレート & 30fps & 固定値 \\ \hline
+    MCS & MCS8 & 256QAM \\ \hline
+  \end{tabular}
+\end{table}

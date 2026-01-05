@@ -1,0 +1,127 @@
+\documentclass[12pt,dvipdfmx,a4paper]{jsarticle}
+
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref} 
+
+% 本文
+\url{https://sites.google.com/view/gemini} % URLをそのまま表示
+\href{https://sites.google.com/view/gemini}{Geminiのサイト} % 好きな文字にリンクを貼る
+
+\title{ミーティング資料}
+\author{B3 AJG23066 石井章}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{目的}
+\begin{itemize}
+    \item 画像フレーム単位での許容遅延以内での受信側到達率およびロス率の評価.
+    \item A-MPDU を画像フレーム単位で適用した場合の性能向上効果の分析.
+    \item EDCA を用いて I フレームを優先送信した場合の性能比較.
+    \item 可能であれば OFDMA 伝送適用時の性能向上効果の評価.
+\end{itemize}
+
+\section{進捗}
+\begin{itemize}
+    \item ns-3 のインストール
+\end{itemize}
+
+
+\subsection{シミュレーション環境とパラメータ設定}
+
+シミュレーションシステムの基本設定を表\ref{tab:sim_params}に示す.
+
+\begin{table}[H]
+\centering
+\caption{シミュレーション基本パラメータ}
+\begin{tabular}{cc}
+\toprule
+パラメータ & 値 \\
+\midrule
+シミュレータ & ns-3.46.1 \\
+シミュレーション時間 & 10 秒 \\
+フロー & 下り方向 \\
+有線のデータレート & 1Gbps \\
+有線遅延 & 1ms \\
+無線標準 & 802.11be (Wi-Fi 7) \\
+周波数帯域 & 2.4 GHz, 20 MHz 幅 \\
+レート制御 & MCS8 \\
+AP-STA間距離 & 10m \\
+UDPペイロードサイズ & 1400 バイト \\
+フレームレート & 30 fps (33.3 ms 間隔) \\
+I, P, Bパケット数 & それぞれ50, 15, 5 \\
+バースト送信時のパケット送信間隔 & 10\(\mu\)s \\
+\bottomrule
+\end{tabular}
+\label{tab:sim_params}
+\end{table}
+
+
+\subsection{画像フレームのパケット数の設定}
+ffprobeというツールを使用してmp4動画のI, P, B
+フレームのデータ量を調べ、それをパケットサイズの
+1400byteで割ることで決定した。
+
+\begin{mdframed}[backgroundcolor=gray!10, hidealllines=true]
+\begin{verbatim}
+ $ ffprobe -v error -select_streams v:0 -show_frames 
+ -show_entries frame=pict_type,pkt_size -of csv 
+ video.mp4 
+ | head -5
+frame,146191,I
+frame,5688,B
+frame,32288,P
+frame,5236,B
+frame,37237,P
+\end{verbatim}
+\end{mdframed}
+
+これによって得られる結果をI, P, Bフレームごとに
+ファイルに分け、フレームサイズの平均を求めた。
+
+\begin{mdframed}[backgroundcolor=gray!10, hidealllines=true]
+\begin{verbatim}
+python3 avg.py Iframe.csv
+解析ファイル: Iframe.csv
+対象フレーム数: 36
+平均データ量: 83054.28 bytes
+パケット数: 83054.28 / 1400 = 59.32
+\end{verbatim}
+\end{mdframed}
+
+サンプルとして以下の三つの動画を使用した(すべて1080p)。
+それぞれミュージックビデオ、アニメ、スポーツの代表として想定している。
+\begin{itemize}
+  \item \href{https://www.youtube.com/watch?v=WJzSBLCaKc8&list=RDWJzSBLCaKc8&start_radio=1}{ヒカキンyoutubeテーマソング} 
+  \item \href{https://www.youtube.com/watch?v=kVHimB7_cjQ}{ジョジョの奇妙な冒険予告} 
+  \item \href{https://www.youtube.com/watch?v=8X_f465Wli8}{井上尚弥vsピカソ戦ハイライト} 
+\end{itemize}
+
+それぞれの動画のI, P, Bフレームをパケット数に換算した結果は以下の通り.
+\begin{table}[htbp]
+  \centering
+  \caption{画像フレームの平均パケット数}
+  \begin{tabular}{c|ccc}
+    & I & P & B \\ 
+    ヒカキン & 34.72 & 13.13 & 5.04 \\ 
+    ジョジョ & 47.95 & 15.20 & 4.34 \\
+    井上尚弥 & 59.32 & 20.04 & 7.55 \\
+  \end{tabular}
+\end{table}
+
+動画によって画像フレームのデータ量にばらつきがあることがわかった。
+本実験では妥当な値として、
+Iフレーム=50パケット、Pフレーム=15パケット、Bフレーム=5パケット
+とすることにした。
+
+
+\section{次回までの目標}
+\begin{itemize}
+  \item ns3のさらなる理解
+\end{itemize}
+
+\end{document}
