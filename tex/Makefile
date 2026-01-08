@@ -22,8 +22,14 @@ distclean: clean
 	dvipdfmx $<
 
 # .tex → .dvi （参照や目次を考慮して2回コンパイル）
-%.dvi: %.tex
+%.dvi: %.tex $(wildcard input/*.tex) 
+	# メインファイルを置換
 	sed -i '' 's/。/./g' $<
 	sed -i '' 's/、/, /g' $<
+	# input内の全texファイルを置換
+	@for f in $(wildcard input/*.tex); do \
+		sed -i '' 's/。/./g' $$f; \
+		sed -i '' 's/、/, /g' $$f; \
+	done
 	uplatex $<
 	uplatex $<

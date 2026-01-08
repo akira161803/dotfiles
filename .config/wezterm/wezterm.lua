@@ -12,6 +12,8 @@ config.macos_window_background_blur = 20 -- ぼかし
 --config.window_decorations = "RESIZE" -- 上のバー消す
 config.hide_tab_bar_if_only_one_tab = true -- タブが一つのとき非表示
 
+config.native_macos_fullscreen_mode = true
+
 -- タブバーを透明にする
 config.window_frame = {
 	inactive_titlebar_bg = "none",
