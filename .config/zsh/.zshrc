@@ -23,6 +23,13 @@ gac() {
   git commit -m "$*"
 }
 
+gacp() {
+  git add -A
+  # "$*" と書くと、後ろに打った文字を全部繋げて一つのメッセージにする
+  git commit -m "$*"
+  git push origin main
+}
+
 #directory stack
 #setopt AUTO_PUSHD           # Push the current directory visited on the stack.
 #setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
