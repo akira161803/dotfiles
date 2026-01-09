@@ -4,58 +4,23 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "TSでかな",
+                        "description": "Space + Control を バックスラッシュに割り当て",
                         "manipulators": [
                             {
-                                "conditions": [
-                                    {
-                                        "identifiers": [
-                                            {
-                                                "product_id": 2675,
-                                                "vendor_id": 13364
-                                            }
-                                        ],
-                                        "type": "device_if"
-                                    }
-                                ],
+                                "type": "basic",
                                 "from": {
-                                    "modifiers": { "optional": ["any"] },
-                                    "simultaneous": [
-                                        { "key_code": "t" },
-                                        { "key_code": "s" }
-                                    ]
-                                },
-                                "parameters": { "basic.simultaneous_threshold_milliseconds": 100 },
-                                "to": [{ "key_code": "japanese_kana" }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "IAで英数",
-                        "manipulators": [
-                            {
-                                "conditions": [
-                                    {
-                                        "identifiers": [
-                                            {
-                                                "product_id": 2675,
-                                                "vendor_id": 13364
-                                            }
-                                        ],
-                                        "type": "device_if"
+                                    "key_code": "spacebar",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_control"
+                                        ]
                                     }
-                                ],
-                                "from": {
-                                    "modifiers": { "optional": ["any"] },
-                                    "simultaneous": [
-                                        { "key_code": "i" },
-                                        { "key_code": "a" }
-                                    ]
                                 },
-                                "parameters": { "basic.simultaneous_threshold_milliseconds": 100 },
-                                "to": [{ "key_code": "japanese_eisuu" }],
-                                "type": "basic"
+                                "to": [
+                                    {
+                                        "key_code": "international3"
+                                    }
+                                ]
                             }
                         ]
                     }

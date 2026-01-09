@@ -1,4 +1,5 @@
 autoload -Uz compinit; compinit
+
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 #prompt
@@ -16,6 +17,11 @@ alias ll="ls -lahS"
 alias mvim="nvim -u none"
 alias kali="docker start -ai kali"
 
+gac() {
+  git add -A
+  # "$*" と書くと、後ろに打った文字を全部繋げて一つのメッセージにする
+  git commit -m "$*"
+}
 
 #directory stack
 #setopt AUTO_PUSHD           # Push the current directory visited on the stack.
