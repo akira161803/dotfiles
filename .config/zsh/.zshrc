@@ -16,6 +16,11 @@ alias la="ls -a"
 alias ll="ls -lahS"
 alias mvim="nvim -u none"
 alias kali="docker start -ai kali"
+alias nsbld="~/workspace/ns-3.46.1/ns3 build"
+
+simrun() {
+ ~/workspace/ns-3.46.1/ns3 run "scratch/video-stream/video-stream-simulation.cc $*"
+}
 
 gac() {
   git add -A
