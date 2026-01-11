@@ -9,7 +9,9 @@ $directory\
 $git_branch\
 $git_status\
 $git_metrics\
-[](fg:#FCF392 bg:#030B16)\
+[](fg:#FCF392 bg:18)\
+$cmd_duration\
+[](fg:18 bg:#030B16)\
 $character\
 """
 
@@ -37,8 +39,10 @@ format = "[ $symbol$branch ]($style)"
 symbol = " "
 
 [cmd_duration]
-format = "[  $duration ]($style)"
+min_time = 10000        # 10,000ms (10秒) 以上かかった時だけ表示
+format = "[ $duration ]($style)"
 style = "fg:bright-white bg:18"
+#show_milliseconds = false # ミリ秒までは表示しない
 
 [character]
 success_symbol = '[ \$](bold green)'
