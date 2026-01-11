@@ -11,7 +11,7 @@ $git_status\
 $git_metrics\
 [](fg:#FCF392 bg:18)\
 $cmd_duration\
-[](fg:18 bg:#030B16)\
+[](fg:18 bg:none)\
 $character\
 """
 
